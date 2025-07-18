@@ -6,7 +6,7 @@ const generateToken = (id) => {
 };
 
 export const registerUser = async (req, res) => {
-  console.log("✅ Register route hit!");
+  console.log(" Register route hit!");
   console.log("Request Body:", req.body);
   const { name, email, password } = req.body;
 
