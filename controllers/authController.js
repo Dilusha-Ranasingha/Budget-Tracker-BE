@@ -6,6 +6,8 @@ const generateToken = (id) => {
 };
 
 export const registerUser = async (req, res) => {
+  console.log("✅ Register route hit!");
+  console.log("Request Body:", req.body);
   const { name, email, password } = req.body;
 
   try {
@@ -21,6 +23,7 @@ export const registerUser = async (req, res) => {
       token: generateToken(user._id),
     });
   } catch (err) {
+    console.error('Registration Error:', err); // Log the full error
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -42,6 +45,7 @@ export const loginUser = async (req, res) => {
       res.status(401).json({ message: 'Invalid email or password' });
     }
   } catch (err) {
+    console.error('Login Error:', err); // Log the full error
     res.status(500).json({ message: 'Server error' });
   }
 };
