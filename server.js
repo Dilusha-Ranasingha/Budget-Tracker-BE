@@ -9,7 +9,12 @@ dotenv.config();
 connectDB(); // connect to MongoDB
 
 const app = express();
-app.use(cors());
+
+app.use(cors({
+  origin: process.env.FRONTEND_URL, // frontend origin allowed
+  credentials: true               // allow cookies 
+}));
+
 app.use(express.json());
 
 const PORT = process.env.PORT || 5001;
