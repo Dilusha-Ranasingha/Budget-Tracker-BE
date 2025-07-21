@@ -4,6 +4,7 @@ import {
   getAllTransactions,
   getTransactionsByDate,
   getTodaySummary,
+  getAllSummary,
   updateTransaction,
   deleteTransaction
 } from '../controllers/transactionController.js';
@@ -17,6 +18,7 @@ router.post('/', createTransaction);
 router.get('/', getAllTransactions);
 router.get('/by-date', getTransactionsByDate);
 router.get('/today-summary', getTodaySummary);
+router.get('/all-summary', getAllSummary);
 router.put('/:id', updateTransaction);
 router.delete('/:id', deleteTransaction);
 
