@@ -77,6 +77,29 @@ export const getTodaySummary = async (req, res) => {
   }
 };
 
+// GET /api/transactions/all-summary
+export const getAllSummary = async (req, res) => {
+    try {
+        const transactions = await Transaction.find({ userId: req.user._id });
+
+        let income = 0;
+        let expense = 0;
+
+        transactions.forEach(tx => {
+            if (tx.type === 'income') income += tx.amount;
+            else expense += tx.amount;
+        });
+
+        res.json({
+            income,
+            expense,
+            balance: income - expense
+        });
+    } catch (err) {
+        res.status(500).json({ message: 'All summary failed', error: err.message });
+    }
+};
+
 // PUT /api/transactions/:id
 export const updateTransaction = async (req, res) => {
   try {
