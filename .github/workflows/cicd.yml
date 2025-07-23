@@ -30,29 +30,21 @@ jobs:
         run: docker push dilusharanasinghe/budget-tracker-be:latest
 
   deploy:
-  needs: build
-  runs-on: [self-hosted, EC2-budget-tracker] # Ensure  this matches your self-hosted runner label
-  steps:
-    - name: Debug environment
-      run: env
+    needs: build
+    runs-on: [self-hosted, EC2-budget-tracker]  # Requires self-hosted runner on my EC2 
+    steps:
+      - name: Pull Image from Docker Hub
+        run: docker pull dilusharanasinghe/budget-tracker-be:latest
 
-    - name: Pull Image from Docker Hub
-      run: |
-        set -x
-        docker pull dilusharanasinghe/budget-tracker-be:latest
+      - name: Remove old container
+        run: docker rm -f budget-tracker-backend || true
 
-    - name: Remove old container
-      run: |
-        set -x
-        docker rm -f budget-tracker-backend || true
-
-    - name: Run Docker container with secrets
-      run: |
-        set -x
-        docker run -d -p 5001:5001 \
-          --name budget-tracker-backend \
-          -e MONGO_URI=${{ secrets.MONGO_URI }} \
-          -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
-          -e FRONTEND_URL=${{ secrets.FRONTEND_URL }} \
-          -e PORT=${{ secrets.PORT }} \
-          dilusharanasinghe/budget-tracker-be:latest
+      - name: Run Docker container with secrets
+        run: |
+          docker run -d -p 5001:5001 \
+            --name budget-tracker-backend \
+            -e MONGO_URI=${{ secrets.MONGO_URI }} \
+            -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+            -e FRONTEND_URL=${{ secrets.FRONTEND_URL }} \
+            -e PORT=${{ secrets.PORT }} \
+            dilusharanasinghe/budget-tracker-be:latest
