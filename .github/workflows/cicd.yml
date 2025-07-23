@@ -31,7 +31,7 @@ jobs:
 
   deploy:
   needs: build
-  runs-on: [self-hosted, EC2-budget-tracker]
+  runs-on: [self-hosted, EC2-budget-tracker] # Ensure this matches your self-hosted runner label
   steps:
     - name: Debug environment
       run: env
