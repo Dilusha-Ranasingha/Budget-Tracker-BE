@@ -31,7 +31,7 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: [self-hosted, EC2-budget-tracker]  # Requires self-hosted runner on my EC2
+    runs-on: [self-hosted, EC2-budget-tracker]  # Requires self-hosted runner on my EC2 
     steps:
       - name: Pull Image from Docker Hub
         run: docker pull dilusharanasinghe/budget-tracker-be:latest
