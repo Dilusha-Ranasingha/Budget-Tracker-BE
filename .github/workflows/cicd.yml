@@ -43,8 +43,8 @@ jobs:
         run: |
           docker run -d -p 5001:5001 \
             --name budget-tracker-backend \
-            -e MONGO_URI=${{ secrets.MONGO_URI }} \
-            -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
-            -e FRONTEND_URL=${{ secrets.FRONTEND_URL }} \
-            -e PORT=${{ secrets.PORT }} \
+            -e MONGO_URI="${{ secrets.MONGO_URI }}" \
+            -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+            -e FRONTEND_URL="${{ secrets.FRONTEND_URL }}" \
+            -e PORT="${{ secrets.PORT }}" \
             dilusharanasinghe/budget-tracker-be:latest
