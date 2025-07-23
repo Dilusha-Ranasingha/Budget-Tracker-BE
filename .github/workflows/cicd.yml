@@ -33,6 +33,14 @@ jobs:
     needs: build
     runs-on: [self-hosted, EC2-budget-tracker]  # Requires self-hosted runner on my EC2 
     steps:
+      - name: Confirm runner and environment
+        run: |
+          echo "Runner is alive"
+          hostname
+          whoami
+          docker --version
+          docker ps -a
+
       - name: Pull Image from Docker Hub
         run: docker pull dilusharanasinghe/budget-tracker-be:latest
 
