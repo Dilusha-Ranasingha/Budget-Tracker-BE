@@ -1,0 +1,50 @@
+name: Backend CI/CD
+
+on:
+  push:
+    branches:
+      - main  # or your working branch name
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker Image
+        run: docker build -t dilusharanasinghe/budget-tracker-be .
+
+      - name: Push Docker Image
+        run: docker push dilusharanasinghe/budget-tracker-be:latest
+
+  deploy:
+    needs: build
+    runs-on: [aws-ec2]  # Requires self-hosted runner on your EC2
+    steps:
+      - name: Pull Image from Docker Hub
+        run: docker pull dilusharanasinghe/budget-tracker-be:latest
+
+      - name: Remove old container
+        run: docker rm -f budget-tracker-backend || true
+
+      - name: Run Docker container with secrets
+        run: |
+          docker run -d -p 5001:5001 \
+            --name budget-tracker-backend \
+            -e MONGO_URI=${{ secrets.MONGO_URI }} \
+            -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+            -e FRONTEND_URL=${{ secrets.FRONTEND_URL }} \
+            -e PORT=${{ secrets.PORT }} \
+            dilusharanasinghe/budget-tracker-be:latest
