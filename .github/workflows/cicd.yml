@@ -3,7 +3,7 @@ name: Backend CI/CD
 on:
   push:
     branches:
-      - main  # or your working branch name
+      - main  # my working branch name
 
 jobs:
   build:
